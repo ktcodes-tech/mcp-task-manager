@@ -1,0 +1,33 @@
+{
+  "name": "task_manager",
+  "description": "Manages a simple todo list with add and list operations",
+  "methods": {
+    "add_task": {
+      "description": "Add a new task to the todo list",
+      "input_schema": {
+        "text": {
+          "type": "string",
+          "description": "The text of the task to add"
+        }
+      },
+      "output_schema": {
+        "success": {
+          "type": "boolean",
+          "description": "True if the task was added successfully"
+        }
+      }
+    },
+    "list_tasks": {
+      "description": "List all tasks in the todo list",
+      "input_schema": {},
+      "output_schema": {
+        "tasks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
