@@ -1,9 +1,9 @@
+from db import SessionLocal, Task, init_db
+
 from pydantic import BaseModel
 from fastapi import FastAPI, Request
 from fastapi.responses import FileResponse, JSONResponse
 import os
-import requests
-import json
 
 from agent import load_manifest, build_prompt, call_ollama, parse_agent_response, call_mcp
 
@@ -21,16 +21,19 @@ def get_manifest():
     return FileResponse(manifest_path, media_type="application/json")
 
 def handle_rpc_call(method: str, params: dict, request_id=None):
+    db = SessionLocal()
     if method == "add_task":
         task = params.get("task")
         if task:
-            task_list.append(task)
-            result = { "tasks": task_list, "success": True }
+            new_task = Task(text=task)
+            db.add(new_task)
+            db.commit()
+            result = { "tasks": db.query(Task).all(), "success": True }
         else:
             result = { "success": False }
 
     elif method == "list_tasks":
-        result = { "tasks": task_list }
+        result = { "tasks": db.query(Task).all() }
 
     else:
         return {
@@ -77,3 +80,6 @@ async def agent_interface(msg: Message):
         "params": parsed["params"],
         "mcp_result": rpc_result["result"]
     }
+
+init_db()  # Initialize the database
+print("Database initialized and ready to use.")
