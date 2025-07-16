@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy import create_engine, Column, Integer, String, Boolean
 from sqlalchemy.orm import declarative_base, sessionmaker
 import os
 
@@ -47,6 +47,7 @@ class Task(Base):
     __tablename__ = "tasks"
     id = Column(Integer, primary_key=True, index=True)
     text = Column(String, nullable=False)
+    completed = Column(Boolean, default=False)  # 0 for incomplete, 1 for complete
 
 def init_db():
     Base.metadata.create_all(bind=engine)

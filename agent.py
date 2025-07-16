@@ -54,7 +54,7 @@ def build_prompt(manifest, user_input):
 
         Reply with JSON: {{
         "method": "<tool_name>",
-        "params": {{ "task": "<task_description>" and other parameters (task_id, new_task) as needed }}
+        "params": {{ "task": "<task_description>" and other parameters (task_id, task_ids, new_task, completed, search_term ONLY) as needed }}
     }}"""
 
     return prompt

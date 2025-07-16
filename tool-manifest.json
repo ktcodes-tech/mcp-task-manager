@@ -5,15 +5,28 @@
     "add_task": {
       "description": "Add a new task to the todo list",
       "input_schema": {
-        "text": {
+        "task": {
           "type": "string",
           "description": "The text of the task to add"
+        },
+        "completed": {
+          "type": "boolean",
+          "description": "Whether the task is completed (default: false)",
+          "default": false,
+          "optional": true
         }
       },
       "output_schema": {
         "success": {
           "type": "boolean",
           "description": "True if the task was added successfully"
+        },
+        "tasks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "The updated list of tasks after adding the new task"
         }
       }
     },
@@ -24,7 +37,17 @@
         "tasks": {
           "type": "array",
           "items": {
-            "type": "string"
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string",
+                "description": "The text of the task"
+              },
+              "completed": {
+                "type": "boolean",
+                "description": "Whether the task is completed"
+              }
+            }
           }
         }
       }
@@ -54,6 +77,32 @@
         "new_text": {
           "type": "string",
           "description": "The new text for the task"
+        },
+        "completed": {
+          "type": "boolean",
+          "description": "Whether the task is completed"
+        }
+      },
+      "output_schema": {
+        "success": {
+          "type": "boolean",
+          "description": "True if the task was updated successfully"
+        }
+      }
+    },
+    "update_tasks": {
+      "description": "Update tasks with these IDs",
+      "input_schema": {
+        "task_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of task IDs to update"
+        },
+        "completed": {
+          "type": "boolean",
+          "description": "Whether the task is completed"
         }
       },
       "output_schema": {
@@ -89,11 +138,11 @@
       }
     },
     "search_tasks": {
-      "description": "Search for tasks containing a specific keyword",
+      "description": "Search for tasks containing a specific search term",
       "input_schema": {
-        "keyword": {
+        "search_term": {
           "type": "string",
-          "description": "The keyword to search for in task texts"
+          "description": "The term to search for in task texts"
         }
       },
       "output_schema": {

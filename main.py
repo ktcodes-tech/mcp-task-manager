@@ -47,18 +47,33 @@ def list_tasks(db):
 
 def update_task(db, params: dict):
     task_id = params.get("task_id")
-    new_text = params.get("new_task")
     task = db.query(Task).filter(Task.id == task_id).first()
-    if task and new_text:
-        task.text = new_text
+    completed = params.get("completed", task.completed if task else False)
+    text = params.get("new_task", task.text if task else None)
+    if task:
+        task.text = text
+        task.completed = completed
         db.commit()
         result = { "tasks": db.query(Task).all(), "success": True }
     else:
         result = { "success": False, "error": "Task not found or invalid data" }
     return result
 
+def update_tasks(db, params: dict):
+    task_ids = params.get("task_ids", [])
+    completed = params.get("completed", None)
+    if not task_ids:
+        return { "success": False, "error": "No task IDs provided" }
+    tasks = db.query(Task).filter(Task.id.in_(task_ids)).all()
+    if not tasks:
+        return { "success": False, "error": "No tasks found for the provided IDs" }
+    for task in tasks:
+        task.completed = completed if completed is not None else task.completed
+    db.commit()
+    return { "tasks": db.query(Task).all(), "success": True }
+
 def search_tasks(db, params: dict):
-    task = params.get("keyword")
+    task = params.get("search_term")
     task = db.query(Task).filter(Task.text.contains(task))
     if task:
         return { "tasks": task.all() }
@@ -96,6 +111,9 @@ def handle_rpc_call(method: str, params: dict, request_id=None):
 
     elif method == "update_task":
         result = update_task(db, params)
+
+    elif method == "update_tasks":
+        result = update_tasks(db, params)
 
     elif method == "search_tasks":
         result = search_tasks(db, params)
