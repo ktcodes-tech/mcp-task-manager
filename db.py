@@ -3,7 +3,7 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 import os
 
 # Configure DB URL (adjust to match your PostgreSQL setup)
-DB_URL = "postgresql://localhost:5432/mcp_tasks"
+DB_URL = "postgresql://postgres:password@localhost:5432/mcp_tasks"
 
 import psycopg2
 from sqlalchemy.exc import OperationalError
