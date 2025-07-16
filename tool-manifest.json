@@ -28,6 +28,102 @@
           }
         }
       }
+    },
+    "delete_task": {
+      "description": "Delete a task from the todo list",
+      "input_schema": {
+        "task_id": {
+          "type": "integer",
+          "description": "The ID of the task to delete"
+        }
+      },
+      "output_schema": {
+        "success": {
+          "type": "boolean",
+          "description": "True if the task was deleted successfully"
+        }
+      }
+    },
+    "update_task": {
+      "description": "Update an existing task in the todo list",
+      "input_schema": {
+        "task_id": {
+          "type": "integer",
+          "description": "The ID of the task to update"
+        },
+        "new_text": {
+          "type": "string",
+          "description": "The new text for the task"
+        }
+      },
+      "output_schema": {
+        "success": {
+          "type": "boolean",
+          "description": "True if the task was updated successfully"
+        }
+      }
+    },
+    "get_task": {
+      "description": "Get details of a specific task",
+      "input_schema": {
+        "task_id": {
+          "type": "integer",
+          "description": "The ID of the task to retrieve"
+        }
+      },
+      "output_schema": {
+        "task": {
+          "type": "string",
+          "description": "The text of the task"
+        }
+      }
+    },
+    "clear_tasks": {
+      "description": "Clear all tasks from the todo list",
+      "input_schema": {},
+      "output_schema": {
+        "success": {
+          "type": "boolean",
+          "description": "True if all tasks were cleared successfully"
+        }
+      }
+    },
+    "search_tasks": {
+      "description": "Search for tasks containing a specific keyword",
+      "input_schema": {
+        "keyword": {
+          "type": "string",
+          "description": "The keyword to search for in task texts"
+        }
+      },
+      "output_schema": {
+        "tasks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "get_task_count": {
+      "description": "Get the total number of tasks in the todo list",
+      "input_schema": {},
+      "output_schema": {
+        "count": {
+          "type": "integer",
+          "description": "The total number of tasks"
+        }
+      }
+    },
+    "get_task_summary": {
+      "description": "Get a summary of all tasks in the todo list",
+      "input_schema": {},
+      "output_schema": {
+        "summary": {
+          "type": "string",
+          "description": "A summary of all tasks"
+        }
+      }
     }
   }
 }

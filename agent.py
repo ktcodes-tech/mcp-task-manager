@@ -27,7 +27,8 @@ def parse_agent_response(response: str):
         end = response.rindex("}") + 1
         return json.loads(response[start:end])
     except Exception as e:
-        raise ValueError(f"Failed to extract JSON from model output:\n{response}\n\n{e}")
+        print(f"Failed to extract JSON from model output:\n{response}\n\n{e}")
+        return { "method": "", "params": { "message": response.strip() } }
 
 def call_mcp(method: str, params: dict):
     payload = {
@@ -53,7 +54,7 @@ def build_prompt(manifest, user_input):
 
         Reply with JSON: {{
         "method": "<tool_name>",
-        "params": {{ "task": "<task_description>" }}
+        "params": {{ "task": "<task_description>" and other parameters (task_id, new_task) as needed }}
     }}"""
 
     return prompt
